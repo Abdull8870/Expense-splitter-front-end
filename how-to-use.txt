@@ -1,0 +1,9 @@
+STEP 1 : Run "npm install" inside this project folder to install all dependencies.
+
+STEP 2 : Run "ng serve" to see the app in action
+
+IF YOU STILL FACE ERROR REPLICATE THE BELOW STEPS
+RUN : 
+STEP 1 : Run npm uninstall -g angular-cli @angular/cli
+STEP 2 : Run npm cache clean --force
+STEP 3 :npm install -g @angular/cli
