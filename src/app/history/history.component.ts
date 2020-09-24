@@ -17,13 +17,6 @@ export class HistoryComponent implements OnInit {
   constructor(private historyService:HistoryService,
   private route: ActivatedRoute) { }
 
-  /**
-     * @description OnInit the project ID from the params will be listened and once after that the
-     get historymethod is called and parallelly historySub will listen to the history of the particular project
-     * @author Abdul Rahuman
-     */
-
-
   ngOnInit(): void {
     this.isLoading=true;
     this.route.params

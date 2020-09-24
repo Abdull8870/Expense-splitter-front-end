@@ -1,13 +1,12 @@
-<div class="container">
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-card *ngIf="createProject && !isLoading">
+<mat-card *ngIf="createProject && !isLoading" class="create">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <div class="col-sm-12 col-md-12">
         <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
           <div formGroupName="userData">
             <div class="form-group">
-              <label for="projectName">Project Name</label>
+              <label for="projectName">GROUP NAME</label>
               <input
                 type="text"
                 id="projectName"
@@ -16,11 +15,11 @@
                 minlength="1" maxlength="20" size="20">
               <span
                 *ngIf="!projectForm.get('userData.projectName').valid && projectForm.get('userData.projectName').touched"
-                class="help-block">Enter a valid Project Name
+                class="help-block">ENTER A VALID GROUP NAME
                 </span>
             </div>
             <div class="form-group">
-              <label for="projectName">Expense Created By</label>
+              <label for="projectName">GROUP Created By</label>
               <input
                 type="text"
                 id="createdBy"
@@ -34,49 +33,51 @@
             </div>
           </div>
           <div formArrayName="users">
-            <h4>Add all the persons invovled in the Expense</h4>
+            <h4>Add all the friends invovled in the Expense</h4>
             <button
-              class="btn btn-default"
+              class="btn btn-primary"
               type="button"
-              (click)="onAddUser()">Add Person</button>
+              (click)="onAddUser()">Add Friends To the Group</button>
             <div
               class="form-group"
               *ngFor="let user of projectForm.get('users').controls; let i = index">
-              <input type="text" placeholder="Enter the Email id of the user" class="form-control" [formControlName]="i">
+              <input type="text" placeholder="Enter the Email id of your friend" class="form-control" [formControlName]="i">
               <button class="btn btn-danger" type="button" (click)="onDelete(i)">DELETE</button>
             </div>
           </div>
           <br>
           <span
             *ngIf="!projectForm.valid && projectForm.touched"
-            class="help-block">Please enter valid data!</span>
+            class="help-block">Please enter all details !</span>
           <button class="btn btn-primary" type="submit" [disabled]="!projectForm.valid || !submit">Submit</button>
-          <button class="btn btn-info" type="button" (click)="onCancel()">Cancel</button>
+          <button class="btn btn-danger" type="button" (click)="onCancel()">Cancel</button>
         </form>
       </div>
     </div>
   </div>
 </mat-card>
 <div *ngIf="!createProject && !isLoading">
-<mat-card class="example-card" *ngFor="let project of PagenationProject;let i=index">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title style="color:#FF0000;">PROJECT NAME : {{project.name}}</mat-card-title>
-    <mat-card-subtitle><strong>TOTAL PERSONS INVOLVED IN THE PROJECT</strong></mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <ol>
-      <li *ngFor="let users of project.users; let i=index">{{users}}</li>
-    </ol>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button mat-button color="primary" (click)="CreateNew()">CREATE ANOTHER PROJECT</button>
-    <button mat-raised-button mat-button color="accent" [routerLink]="['/Users',project._id]">ADD BILL DETAILS</button>
-    <button *ngIf="userId===project.creator" mat-raised-button mat-button color="warn" (click)="onDeleteProject(project._id,i)">DELETE PROJECT</button>
-    <button mat-raised-button mat-button color="accent" [routerLink]="['/history',project._id]">HISTORY</button>
-  </mat-card-actions>
-</mat-card>
-</div>
+  <div class="card mb-3" *ngFor="let project of PagenationProject;let i=index">
+      <mat-card>
+            <div class="card-header">
+              <h3 style="color:#3377ff;">GROUP NAME : {{project.name  | uppercase }}</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title" style="color:#ff0000;">TOTAL PERSONS INVOLVED IN THE GROUP</h4>
+                <ol class="list-group list-group-flush">
+                  <li *ngFor="let users of project.users; let i=index" class="list-group-item">{{users}} <span class="glyphicon glyphicon-envelope"></span></li>
+                </ol>
+            </div>
+            <div class="card-footer text-muted">
+              <button class="btn btn-primary" (click)="CreateNew()">CREATE ANOTHER GROUP</button>
+              <button class="btn btn-success" [routerLink]="['/Users',project._id]">ADD BILL DETAILS</button>
+              <button *ngIf="userId===project.creator" class="btn btn-danger"  (click)="onDeleteProject(project._id,i)">DELETE GROUP</button>
+              <button class="btn btn-info"  [routerLink]="['/history',project._id]">HISTORY</button>
+            </div>
+            <small><b>CREATED BY : {{project.createdBy | uppercase }}</b></small>
+            </mat-card>
+          </div>
+        </div>
+
 <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"
   *ngIf="!createProject && !isLoading"></mat-paginator>
-</div>

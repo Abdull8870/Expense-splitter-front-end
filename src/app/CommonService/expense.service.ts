@@ -18,19 +18,17 @@ export class ExpenseService {
   constructor(private http: HttpClient, private router: Router,
   private toastr: ToastrService) {}
 
-
-
-  getBillasObservable(){
+  getBillasObservable()
+  {
     return this.expenseSub.asObservable();
   }
 
 
   /**
-   * @description Requests server to save the expense in the database
-   * @author Abdul Rahuman
-   * @returns {Object} { message: string; expense: Project }
-   */
-
+ * @description Requests server to save the expense in the database
+ * @author Abdul Rahuman
+ * @returns {Object} { message: string; expense: Project }
+ */
 
     postExpense(_expense:any[],id:string) {
       const data={

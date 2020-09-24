@@ -9,9 +9,41 @@ mat-spinner {
 }
 button
 {
-  margin: 1rem auto;
+  margin: 1rem;
+  position: relative;
 }
 
 ng-template{
   width: auto;
 }
+
+@media screen and (max-width: 600px) {
+
+  mat-card
+  {
+   width: 90%;
+   margin-left: auto;
+   margin-right: auto;
+  }
+
+  .container{
+   width: auto;
+  }
+
+  mat-spinner {
+   margin: auto;
+  }
+
+  button{
+   margin:auto;
+  }
+
+  form{
+    width:80%;
+    position: relative;
+  }
+
+
+
+
+ }

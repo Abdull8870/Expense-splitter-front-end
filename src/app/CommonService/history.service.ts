@@ -17,6 +17,7 @@ export class HistoryService {
   constructor(private http: HttpClient,
   private toastr: ToastrService, private router: Router) {}
 
+
   /**
    * @description Sending the updated subject -> UpdatedHistory as as Observable to the componenent
    from where its been called and subscribed to result.
@@ -27,13 +28,11 @@ export class HistoryService {
     return this.updatedHistory.asObservable();
   }
 
-
   /**
    * @description Requests server to get the History of the project in the database with the help of project_ID
    * @author Abdul Rahuman
    * @returns {Object} { message: string; history: History[]}
    */
-
 
   getHistory(id:string) {
 
@@ -58,7 +57,6 @@ export class HistoryService {
    * @author Abdul Rahuman
    * @returns {Object} { message: string}
    */
-
 
   deleteHistory(projectId:string){
 

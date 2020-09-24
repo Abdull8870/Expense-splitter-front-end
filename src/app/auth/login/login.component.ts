@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit,OnDestroy {
 
 
   ngOnInit(): void {
+    localStorage.removeItem("email");
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(
     authStatus => {
       this.isLoading = false;

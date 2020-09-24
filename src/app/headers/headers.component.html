@@ -5,13 +5,13 @@
     </div>
     <ul class="nav navbar-nav">
       <li><a routerLink='/home' routerLinkActive="active">Home</a></li>
-      <li><a routerLink='/project'routerLinkActive="active">PROJECT</a></li>
+      <li><a routerLink='/project'routerLinkActive="active">GROUPS</a></li>
       <li><a *ngIf="userIsAuthenticated" routerLinkActive="active" (click)="onUserClick()" style="cursor:pointer;">BILLS</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-          <li *ngIf="!userIsAuthenticated"><a routerLink='/login' routerLinkActive="active">LOGIN</a></li>
-          <li *ngIf="!userIsAuthenticated"><a routerLink='/signup' routerLinkActive="active">SIGNUP</a></li>
-          <li *ngIf="userIsAuthenticated">
+          <li class="nav-item" *ngIf="!userIsAuthenticated"><a routerLink='/login' routerLinkActive="active">LOGIN</a></li>
+          <li class="nav-item" *ngIf="!userIsAuthenticated"><a routerLink='/signup' routerLinkActive="active">SIGNUP</a></li>
+          <li class="nav-item" *ngIf="userIsAuthenticated">
             <button style="margin:1rem;" class="btn btn-danger" type="button" (click)="onLogout()">Logout</button>
           </li>
     </ul>

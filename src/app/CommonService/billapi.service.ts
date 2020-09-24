@@ -23,7 +23,7 @@ export class BillDetails {
 
 
     /**
-     * @description requests server to save the bill in the database
+     * @description Requests server to save the bill in the database
      * @author Abdul Rahuman
      * @returns {Object} { message: string; bill: Project }
      */
@@ -51,11 +51,12 @@ export class BillDetails {
       });
   }
 
+
   /**
-   * @description requests server to delete bill in the database
-   * @author Abdul Rahuman
-   * @returns {Object} { message: string; bill: Project}
-   */
+ * @description requests server to delete bill in the database
+ * @author Abdul Rahuman
+ * @returns {Object} { message: string; bill: Project}
+ */
 
 
   deleteBill(billId:string,projectId:string,history){
@@ -80,11 +81,12 @@ export class BillDetails {
       });
   }
 
+
   /**
-   * @description Requests server to update the bill in the database
-   * @author Abdul Rahuman
-   * @returns {Object} { message: string; bill: Project}
-   */
+ * @description Requests server to update the bill in the database
+ * @author Abdul Rahuman
+ * @returns {Object} { message: string; bill: Project}
+ */
 
 
   updateBill(projectId:string,bill:Bill,history:any){
@@ -111,11 +113,14 @@ export class BillDetails {
   }
 
   /**
-   * @description WebSocket which listens to live creation of the bill created in which user is part of
-   note: Listening function is written in the websocketsService file in ../websockets.service
-   and this function is being subscribed to the Observable.
-   * @author Abdul Rahuman
-   */
+     * @description WebSocket which listens to live creation of the bill created in which user is part of
+     note: Listening function is written in the websocketsService file in ../websockets.service
+     and this function is being subscribed to the Observable.
+     * @author Abdul Rahuman
+
+     */
+
+
 
 
   getLiveBills(email:string){
@@ -127,6 +132,7 @@ export class BillDetails {
       projectId:string,
       projectName:string,
       by:string})=>{
+
         if((result.email.includes(email))){
         this.toastr.info( `BY ${result.by}`,`NEW BILL HAS BEEN ADDED TO THE PROJECT ${result.projectName}`);
         this.projectService.getCurrentProject(result.projectId);
@@ -135,12 +141,11 @@ export class BillDetails {
   }
 
   /**
-   * @description WebSocket which listens to live update of the bill user part of
-   note: Listening function is written in the websocketsService file in ../websockets.service
-   and this function is being subscribed to the Observable.
-   * @author Abdul Rahuman
-   */
-
+    * @description WebSocket which listens to live update of the bill user part of
+       note: Listening function is written in the websocketsService file in ../websockets.service
+      and this function is being subscribed to the Observable.
+      * @author Abdul Rahuman
+ */
 
   getLiveUpdatedBills(email:string){
     this.websocketsService.listenLiveUpdateBills().
@@ -161,12 +166,13 @@ export class BillDetails {
     });
   }
 
-  /**
-   * @description WebSocket which listens to live deletion of the bill user part of
-   note: Listening function is written in the websocketsService file in ../websockets.service
-   and this function is being subscribed to the Observable.
-   * @author Abdul Rahuman
-   */
+
+     /**
+     * @description WebSocket which listens to live deletion of the bill user part of
+      note: Listening function is written in the websocketsService file in ../websockets.service
+      and this function is being subscribed to the Observable.
+      * @author Abdul Rahuman
+ */
 
 
   getLiveDeteleBills(email:string){

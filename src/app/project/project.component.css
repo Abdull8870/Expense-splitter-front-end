@@ -1,16 +1,52 @@
-mat-card
-{
-  width: 80%;
-  margin :1rem;
-}
-
-.container{
-  width: auto;
-}
 mat-spinner {
   margin: auto;
 }
-
-button{
+mat-card
+{
+  width: 48%;
+  margin-left: auto;
   margin-right: auto;
+  margin-top: auto;
+  margin-bottom: 2rem;
 }
+
+button
+{
+    margin :0.5rem;
+}
+
+form {
+  width:48%;
+  position: relative;
+}
+button
+{
+  width: auto;
+}
+
+
+ @media screen and (max-width: 600px) {
+   mat-card
+   {
+    width: 100%;
+    margin :1rem;
+   }
+
+   .container{
+    width: auto;
+   }
+
+   mat-spinner {
+    margin: auto;
+   }
+
+   button{
+    margin-right: auto;
+   }
+
+   form{
+     width:80%;
+     position: relative;
+   }
+
+  }

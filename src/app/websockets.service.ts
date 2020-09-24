@@ -7,17 +7,17 @@ import { Observable } from "rxjs"
 })
 export class WebsocketsService {
   socket:any;
-  BACKEND_URL:string="http://expensesplitterbackend-env.eba-vpaafhyz.us-east-2.elasticbeanstalk.com";
+  BACKEND_URL:string="http://expensesplitterbackend-env.eba-vpaafhyz.us-east-2.elasticbeanstalk.com/";
 
   constructor() {
     this.socket=io(this.BACKEND_URL);
   }
 
+  /**
+    * @description Socket to make sure the socket handshake is happened
+    * @author Abdul Rahuman
+  */
 
-
- verifyUser(eventName:string,data:any){
-  this.socket.emit(eventName,data);
- }
 
 
   listen(eventName:string){
@@ -34,6 +34,10 @@ export class WebsocketsService {
      this.socket.emit(eventName,data);
   }
 
+  /**
+    * @description Sockets listening to live creation of project(Groups)
+    * @author Abdul Rahuman
+  */
 
   listenLiveProjects(){
 
@@ -45,6 +49,11 @@ export class WebsocketsService {
     });
   }
 
+  /**
+    * @description Sockets listening to live deletion of project(Groups)
+    * @author Abdul Rahuman
+  */
+
   listenLiveDeleteProject(){
 
     return new Observable((subscriber)=>{
@@ -55,6 +64,12 @@ export class WebsocketsService {
     });
   }
 
+  /**
+    * @description Sockets listening to live creation of bills
+    * @author Abdul Rahuman
+  */
+
+
   listenLiveBills(){
     return new Observable((subscriber)=>{
       this.socket.on('billCreate',(data)=>{
@@ -64,6 +79,11 @@ export class WebsocketsService {
     });
   }
 
+  /**
+    * @description Sockets listening to live updation of bills
+    * @author Abdul Rahuman
+  */
+
   listenLiveUpdateBills(){
     return new Observable((subscriber)=>{
       this.socket.on('billUpdate',(data)=>{
@@ -72,6 +92,11 @@ export class WebsocketsService {
 
     });
   }
+
+  /**
+    * @description Sockets listening to live deletion of bills
+    * @author Abdul Rahuman
+  */
 
   listentoDeleteBill(){
     return new Observable((subscriber)=>{

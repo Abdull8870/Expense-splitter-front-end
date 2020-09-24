@@ -1,65 +1,73 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
+<div class="container">
   <mat-card *ngIf="!isLoading && newBill">
   <form #Expense="ngForm" (submit)="onSubmit()">
     <div class="form-group">
       <label for="exampleInputPassword1">BILL NAME</label>
       <input type="text" class="form-control" name="billname" placeholder="Enter the bill name" ngModel #bill="ngModel" required>
+      <span
+        *ngIf="!bill.valid && bill.touched"
+        class="help-block" style="color:red;">PLEASE ENTER A BILL NAME</span>
     </div>
     <div class="form-group">
-      <label for="Payer">Who paid</label>
+      <label for="Payer">SELECT THE PERSON WHO PAID THE BILL</label>
       <select class="form-control" id="Payer" name="payer" ngModel #payer="ngModel" required>
         <option *ngFor="let user of currentProject.users" [value]="user">{{user}}</option>
       </select>
+      <span
+        *ngIf="!payer.valid && payer.touched"
+        class="help-block" style="color:red;">PLEASE SELECT THE PAYER WHO PAID THE BILL</span>
     </div>
     <div class="form-group">
       <label for="amount">AMOUNT SPENT</label>
       <input type="number" class="form-control" name="amount"
-       pattern="[0-9]+" placeholder="Enter the amount spent" ngModel #amount="ngModel" required>
+       step="any" placeholder="Enter the amount spent" ngModel #amount="ngModel" required>
     </div>
     <span
       *ngIf="amount.invalid && amount.touched"
-      class="help-block" style="color:red">Kindly enter valid Numbers avoid minus symbols</span>
-      <p>TO WHOM</p>
+      class="help-block" style="color:red">Kindly enter valid Numbers avoid symbols</span>
+      <p><span style="background-color:yellow;">PERSONS INVLOVED IN THE BILL</span></p>
     <div class="form-check form-check-inline" *ngFor="let user of currentProject.users">
       <label class="form-check-label" [for]="user" >
      <input class="form-check" type="checkbox" [id]="user" value="{{user}}" name="user"
-     ngModel #reciver="ngModel" (change)="onChange($event)" required>
+     ngModel #reciver="ngModel" (change)="onChange($event)">
       {{user}}</label>
     </div>
     <span
       *ngIf="!Expense.valid && Expense.touched"
-      class="help-block">Please enter valid data!</span>
-    <button type="submit" [disabled]="!Expense.valid" class="btn btn-primary">Submit</button>
+      class="help-block" style="color:red;">KINDLY FILL ALL THE DETAILS</span>
+    <button type="submit" [disabled]="!Expense.valid || !submit" class="btn btn-primary">Submit</button>
     <button type="button" class="btn btn-info" *ngIf="cancel" (click)="onCancel()">cancel</button>
   </form>
     </mat-card>
+    </div>
     <div *ngIf="!newBill && !isLoading">
       <mat-card>
-        <mat-card-title>
-          Total Bills available in
-          <b style="color:red;">{{currentProject.name}}</b>
+        <mat-card-title style="color:#3377ff;" >
+          Total Bills available in <br>
+          <b style="color:red;">{{currentProject.name | uppercase }}</b>
           </mat-card-title>
         <mat-card-content>
-          <button mat-raised-button mat-button color="primary" (click)="onGenerateBill()">GENERATE EXPENSE</button>
-          <button mat-raised-button mat-button color="accent" (click)="onAddNewBill()">ADD NEW BILL</button>
+          <button mat-button class="btn btn-success mr-1" (click)="onGenerateBill()">GENERATE EXPENSE</button>
+          <button mat-button class="btn btn-primary" (click)="onAddNewBill()">ADD NEW BILL</button>
           </mat-card-content>
           </mat-card>
           <br>
           <mat-card *ngFor="let data of pageNationBill;let i=index">
-            <mat-card-title>
-              Bill Name: <b style="color:red;">{{data.name}}</b>
+            <mat-card-title  style="color:#3377ff;">
+              Bill Name: <b style="color:red;">{{data.name | uppercase }}</b>
               </mat-card-title>
                 <mat-card-content>
-                  <h4><b style="color:blue;"> Payer: {{data.payer}} </b> </h4>
+                  <h4><b style="background-color:yellow;"> Payer: {{data.payer}} </b></h4>
                         <ul class="list-group list-group-flush" type="1">
-                          <h4><b style="color:red;">RECEIVERS</b></h4>
-                     <li class="list-group-item" *ngFor="let user of data.to">{{user}}<span class="glyphicon glyphicon-envelope"></span></li>
+                          <h4><b style="color:red;">PERSONS INVOLVED IN THE BILL</b></h4>
+                     <li class="list-group-item" *ngFor="let user of data.to">{{user}} <span class="glyphicon glyphicon-envelope"></span></li>
                      </ul>
-                   <h4>Amout paid : {{data.amount}}</h4>
+                   <h4><span style="background-color:yellow;">Amout paid : {{data.amount}}</span></h4>
                     </mat-card-content>
                     <mat-card-actions>
-                <button mat-raised-button mat-button color="warn" (click)="onDeleteBill(data._id)">DELETE</button>
-                <button mat-raised-button mat-button color="primary" (click)="onEdit(i)">EDIT</button>
+                <button class="btn btn-danger" (click)="onDeleteBill(data._id)">DELETE</button>
+                <button class="btn btn-primary" (click)="onEdit(i)">EDIT</button>
            </mat-card-actions>
      </mat-card>
      <mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"
@@ -80,17 +88,17 @@
       </div>
       <div class="form-group">
         <label for="amount">AMOUNT SPENT</label>
-        <input formControlName="Amount" type="number"  pattern="[0-9]+" class="form-control" name="amount">
+        <input formControlName="Amount" type="number" step="any" class="form-control" name="amount">
       </div>
-        <p>TO WHOM</p>
+        <p>PERSONS INVLOVED IN THE BILL</p>
       <div class="form-group form-check form-check-inline" *ngFor="let user of currentProject.users">
         <label class="form-check-label" [for]="user" >
         <input  class="form-check" type="checkbox" [id]="user" value="{{user}}" name="user" formControlName="To" (change)="onEditChange($event)">
         {{user}}</label>
       </div>
        <mat-dialog-actions align="end">
-           <button mat-button matDialogClose mat-button color="primary">Cancel</button>
-           <button type="submit" mat-button color="accent" matDialogClose mat-button [disabled]="!editForm.valid">Submit</button>
+           <button mat-button matDialogClose class="btn btn-danger mr-1" (click)="onEditCancel()">Cancel</button>
+           <button type="submit" class="btn btn-primary" matDialogClose mat-button [disabled]="!editForm.valid || !submit">Submit</button>
        </mat-dialog-actions>
    </form>
    </ng-template>

@@ -7,3 +7,20 @@ mat-card
 .guide-card{
   margin-top: 1rem;
 }
+
+@media screen and (max-width: 600px) {
+  mat-card
+  {
+    width: 100%;
+    margin: auto;
+  }
+  .guide-card{
+    margin-top: 1rem;
+  }
+
+  button {
+  margin: auto;
+  width: 100%
+  }
+
+ }

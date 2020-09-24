@@ -16,7 +16,7 @@ import { PageEvent } from "@angular/material";
   templateUrl: './project.component.html',
   styleUrls: ['./project.component.css']
 })
-export class ProjectComponent implements OnInit {
+export class ProjectComponent implements OnInit{
   submit:boolean;
   userEmail:string;
   userId:string;
@@ -36,12 +36,6 @@ export class ProjectComponent implements OnInit {
   constructor(private toastr: ToastrService,
     private projectServiceapi:ProjectService,private router: Router) {}
 
-    /**
-       * @description This method is for pagination of the project page the user can view only 3
-       projects in a single page.
-       * @author Abdul Rahuman
-       */
-
    onChangedPage(pageData: PageEvent){
      this.isLoading=true;
      let startIndex:number=+pageData.pageIndex*3;
@@ -51,14 +45,8 @@ export class ProjectComponent implements OnInit {
       this.isLoading=false;
    }
 
-   /**
-      * @description OnInit proSub will start listening to the projects users belongs to
-      and according the output the page will be rendered
-      * @author Abdul Rahuman
-      */
-
-
   ngOnInit() {
+
     this.submit=false;
     this.userEmail=localStorage.getItem('email').toLowerCase();
     this.userId=localStorage.getItem("userId");
@@ -90,10 +78,10 @@ export class ProjectComponent implements OnInit {
   }
 
   /**
-     * @description When a new project is submitted this funtion will call the addProject method
-     to add the project in the database.
-     * @author Abdul Rahuman
-     */
+ * @description When group creation form is being submitted the function is user to store
+ it in the database.
+ * @author Abdul Rahuman
+ */
 
   onSubmit() {
     this.submit=false;
@@ -119,9 +107,9 @@ export class ProjectComponent implements OnInit {
     }
     let history={
       projectId:"na",
-      action:"PROJECT CREATED",
+      action:"GROUP CREATED",
       doneBy:this.userEmail,
-      description:`${this.userEmail} Has Created the Expense Project on
+      description:`${this.userEmail} Has Created the Expense GROUP on
        ${date}`
     }
     this.checkDuplicate(this.users,(unique)=>{
@@ -143,32 +131,31 @@ export class ProjectComponent implements OnInit {
   }
 
   /**
-     * @description When a new project is submitted this funtion will be called and this will
-     check for the duplicates in the project and will return false if it's having any duplicate
-     * @author Abdul Rahuman
-     */
-
+ * @description Checking for any duplication in the entered user emails
+ * @author Abdul Rahuman
+ */
 
   checkDuplicate(users:string[],cb){
-    let temp='';
+    let temp:string[]=users;
     let status=true;
-    users.forEach(x => {
-      if(x!=temp){
-          temp=x;
-      }
-     else if(x===temp){
-       status=false;
-     }
-    });
+    if(users.length > 1) {
+      users.forEach((x,i) => {
+         for (let index =i+1 ; index < temp.length; index++) {
+          if(x===temp[index]){
+            status=false;
+          }
+             }
+      });
+
+    }
     cb(status);
   }
 
   /**
-     * @description when user clicks on the AddUuser button this function will be called
-     and form control for the next user will be added
-     * @author Abdul Rahuman
-     */
-
+ * @description When user clicks on Adduser button in the form this function will
+ add form control to the input
+ * @author Abdul Rahuman
+ */
 
   onAddUser() {
     this.submit=true;
@@ -177,11 +164,10 @@ export class ProjectComponent implements OnInit {
   }
 
   /**
-     * @description when user clicks on the delete button after clicking on AddUser button
-     this function will be called  and form control of the user will be deleted
-     * @author Abdul Rahuman
-     */
-
+ * @description When user clicks on delete button in the form this function will
+ remove the form control of the input
+ * @author Abdul Rahuman
+ */
 
   onDelete(i){
     if(((<FormArray>this.projectForm.get('users')).controls.length==1)){
@@ -192,10 +178,11 @@ export class ProjectComponent implements OnInit {
       }
 
       /**
-         * @description when user clicks on Createanotherproject button this function will be called
-         and new projectform will be created
-          * @author Abdul Rahuman
-         */
+     * @description When user wants to create one new project the function is used to
+     initiate the form
+     * @author Abdul Rahuman
+     */
+
 
  CreateNew(){
    this.projectForm = new FormGroup({
@@ -208,11 +195,14 @@ export class ProjectComponent implements OnInit {
    this.createProject=true;
  }
 
- /**
-    * @description when user clicks on DeleteProject button this function will be called
-    and deleteproject method in the projectServiceapi will be called.
-     * @author Abdul Rahuman
-    */
+
+     /**
+      * @description When user deletes the gorup the function executes and
+      the data in the database is been is removed
+       * @author Abdul Rahuman
+     */
+
+
 
  onDeleteProject(id:string,i:number){
    this.isLoading=true;
@@ -222,18 +212,26 @@ export class ProjectComponent implements OnInit {
  }
 
  /**
-    * @description when user clicks on cancel button while creating a project this function will be called
-     * @author Abdul Rahuman
-    */
+  * @description When user clicks on cancel button in the form this function will
+  reset the form
+   * @author Abdul Rahuman
+ */
 
 
  onCancel(){
+
    if((this.activeProject.length == 0))
    {
      this.createProject=true;
    }
     else {
+      this.submit=false;
       this.createProject=false;
+      let userstemp=this.projectForm.value.users;
+      userstemp.forEach(element => {
+       (<FormArray>this.projectForm.get('users')).controls.pop();
+      });
+      this.projectForm.reset();
     }
  }
 

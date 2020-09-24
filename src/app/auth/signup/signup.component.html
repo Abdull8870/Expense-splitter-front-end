@@ -1,42 +1,66 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
-    <mat-form-field>
-      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
-      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
-    </mat-form-field>
-    <br>
-    <mat-form-field>
-      <input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
-      <mat-error *ngIf="passwordInput.invalid">Your password must contain 8 characters with one uppercase ,lower
-      case and a number</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput name="FirstName" ngModel type="text" placeholder="Enter First Name" #FirstName="ngModel" required>
-      <mat-error *ngIf="FirstName.invalid">Please enter a valid email.</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput name="LastName" ngModel type="text" placeholder="Enter Last Name" #LastName="ngModel" required>
-      <mat-error *ngIf="LastName.invalid">Please enter a valid email.</mat-error>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-    <mat-label>Select the Country</mat-label>
-     <mat-select disableRipple ngModel #country="ngModel" name="country" required>
-     <mat-option *ngFor="let country of countries" [value]="country">{{country}}</mat-option>
-     </mat-select>
-   </mat-form-field>
-   <mat-form-field appearance="fill">
-   <mat-label>Select the Mobile Code</mat-label>
-    <mat-select disableRipple ngModel #phCode="ngModel" name="phoneCode" required>
-    <mat-option *ngFor="let obj of phoneCode" [value]="obj.num">{{obj.code}} - {{obj.num}}</mat-option>
-    </mat-select>
-    </mat-form-field>
-        <mat-form-field>
-      <input type="number"
-      ng-model="number" onKeyPress="if(this.value.length>9) return false;" min="0"
-      name="phoneNumber" ngModel matInput placeholder="PhoneNumber" #phoneInput="ngModel"
-         required>
-    </mat-form-field><br>
-    <button mat-raised-button color="accent" [disabled]="!signupForm.valid" type="submit">Signup</button>
-  </form>
+            <!-- TEXT FIELD GROUPS -->
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input class="form-control" name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+                <small class="form-text text-muted">Your email will not ever be shared</small>
+                <span class="help-block" *ngIf="emailInput.invalid && emailInput.touched" style="color:red;"
+                 >Please enter a valid Email Id</span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" name="password" ngModel class="form-control" placeholder="Password" #passwordInput="ngModel" required>
+                <span class="help-block" *ngIf="passwordInput.invalid && passwordInput.touched" style="color:red;"
+                 >Your password must be a combination of uppercase,lowercase and numbers</span>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name">FIRST NAME</label>
+                  <input class="form-control" name="FirstName" ngModel type="text" placeholder="Enter First Name" #FirstName="ngModel" required>
+                  <span class="help-block" *ngIf="FirstName.invalid && FirstName.touched" style="color:red;"
+                   >Please enter a valid first name</span>
+            </div>
+            <div class="form-group">
+                <label for="name">LAST NAME</label>
+                <input class="form-control" name="LastName" ngModel type="text" placeholder="Enter Last Name" #LastName="ngModel" required>
+                <span class="help-block" *ngIf="LastName.invalid && LastName.touched" style="color:red;"
+                 >Please enter a valid last name</span>
+            </div>
+
+            <!-- SELECT -->
+            <div class="form-group">
+                <label for="gender">SELECT THE COUNTRY</label>
+                <select class="form-control" ngModel #country="ngModel" name="country" required>
+                    <option *ngFor="let country of countries" [value]="country" >{{country}}</option>
+                </select>
+                <span class="help-block" *ngIf="country.invalid && country.touched" style="color:red;"
+                 >Please select the country</span>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">SELECT THE MODILE CODE</label>
+                <select class="form-control" ngModel #phCode="ngModel" name="phoneCode" required>
+                  <option *ngFor="let obj of phoneCode" [value]="obj.num">{{obj.code}} - {{obj.num}}</option>
+                </select>
+                <span class="help-block" *ngIf="phCode.invalid && phCode.touched" style="color:red;"
+                 >Please select the mobile code</span>
+            </div>
+
+
+            <div class="form-group">
+                <label for="name">YOUR MOBILE NUMBER</label>
+                <input type="number"
+                ng-model="number" onKeyPress="if(this.value.length>9) return false;" min="0"
+                name="phoneNumber" ngModel class="form-control" placeholder="PhoneNumber" #phoneInput="ngModel"
+                   required>
+                   <span class="help-block" *ngIf="phoneInput.invalid && phoneInput.touched" style="color:red;"
+                    >Please enter a valid mobile number</span>
+            </div>
+
+            <button  class="btn btn-primary btn-block" [disabled]="!signupForm.valid" type="submit">Signup</button>
+        </form>
 </mat-card>

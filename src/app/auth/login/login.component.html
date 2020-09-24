@@ -1,17 +1,25 @@
-<mat-card *ngIf="!isForgetPassword">
-  <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
-    <mat-form-field>
-      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
-      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
-    </mat-form-field>
-    <br>
-    <mat-form-field>
-      <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
-      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
-    </mat-form-field>
-    <br>
-    <button mat-raised-button color="accent" [disabled]="!loginForm.valid" type="submit">Login</button>
-    <button mat-raised-button color="warn" type="button" (click)="onForgetPassword()">FORGET PASSWORD</button>
-  </form>
-</mat-card>
+<div class="card">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+          <div class="card-header mb-2 bg-dark" style="text-align:center;">
+            <h4>EXPENSE SPLITTER LOGIN FORM</h4>
+          </div>
+          <div class="card-body mt-2">
+            <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
+                        <!-- TEXT FIELD GROUPS -->
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input class="form-control" name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
+                            <span class="help-block" *ngIf="emailInput.invalid && emailInput.touched" style="color:red;"
+                             >Please enter a valid Email Id</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                      <input class="form-control" type="password" name="password" ngModel placeholder="Password" #passwordInput="ngModel" required>
+                      <span class="help-block" *ngIf="passwordInput.touched && passwordInput.invalid" style="color:red;"
+                       >Please enter a valid Password</span>
+                        </div>
+                        <button class="btn btn-primary" [disabled]="!loginForm.valid" type="submit">Login</button>
+                        <button class="btn btn-danger sm" type="button" (click)="onForgetPassword()">FORGET PASSWORD</button>
+                    </form>
+          </div>
+      </div>

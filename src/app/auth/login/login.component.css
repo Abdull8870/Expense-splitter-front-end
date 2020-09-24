@@ -1,17 +1,46 @@
-mat-form-field {
-  width: 100%;
-}
-
 mat-spinner {
   margin: auto;
 }
-mat-card
+.card
 {
-  width: 35%;
+  width: 30%;
   margin :auto;
 }
 
 button
 {
-    margin :1rem;
+    margin :0.5rem;
 }
+
+form{
+  width:auto;
+}
+button
+{
+  width: auto;
+}
+
+@media screen and (max-width: 600px) {
+  mat-spinner {
+    margin: auto;
+  }
+  .card
+  {
+    width: 90%;
+    margin :auto;
+  }
+
+  button
+  {
+      margin :0.5rem;
+  }
+
+  form{
+     width:100;
+  }
+  button
+  {
+    width: auto;
+  }
+
+ }

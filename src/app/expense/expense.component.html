@@ -1,25 +1,32 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-card *ngIf="!isLoading">
-      <mat-card-title>Expense <br>
-        <button mat-raised-button mat-button color="accent" [routerLink]="['/history',this.id]">HISTORY</button>
+
+<!-- <mat-card *ngIf="!isLoading">
+        <mat-card-title>Expense <br>
+        <button mat-raised-button mat-button color="accent" [routerLink]="['/history',this.id]">CLICK HERE TO SEE HISTORY</button>
       </mat-card-title>
+      <mat-card-subtitle  *ngIf="finalExpense.length < 1">
+        <h3>All the bills has been splitted accordingly and no one has to pay</h3>
+        </mat-card-subtitle>
+        <mat-card-subtitle  *ngIf="finalExpense.length > 0">
+          <h3>Person in the "NAME" column has to pay the amount to the person in "TO" column</h3>
+          </mat-card-subtitle>
         <mat-card-content>
         <mat-table [dataSource]="finalExpense" class="mat-elevation-z8">
-  <!-- Payer Column -->
+
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef> NAME </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
   </ng-container>
 
-  <!-- To Column -->
+
   <ng-container matColumnDef="to">
-    <mat-header-cell *matHeaderCellDef> To </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> TO </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.to}} </mat-cell>
   </ng-container>
 
-  <!-- Amount Column -->
+
   <ng-container matColumnDef="amount">
-    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef> AMOUNT </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
   </ng-container>>
 
@@ -27,4 +34,40 @@
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
    </mat-table>
         </mat-card-content>
-    </mat-card>
+    </mat-card> -->
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <mat-card *ngIf="!isLoading">
+        <mat-card-title>Expense<br>
+        <button mat-raised-button mat-button color="accent" [routerLink]="['/history',this.id]">CLICK HERE TO SEE HISTORY</button>
+      </mat-card-title>
+      <mat-card-subtitle  *ngIf="finalExpense.length < 1">
+        <h3>All the bills has been splitted accordingly and no one has to pay</h3>
+        </mat-card-subtitle>
+        <mat-card-subtitle  *ngIf="finalExpense.length > 0">
+          <h4>Person in the "NAME(email)" column has to pay the amount to the person in "TO(email)" column</h4>
+          </mat-card-subtitle>
+        <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>NAME(email)</th>
+                            <th>TO(email)</th>
+                            <th>AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ele of finalExpense; let i=index">
+                            <th scope="row">{{ele.name}}</th>
+                            <td>{{ele.to}}</td>
+                            <td><span style="color:red;">{{ele.amount}}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+       </mat-card>
+    </div>
+
+  </div>
+
+</div>

@@ -19,6 +19,7 @@ export class ResetComponent implements OnInit {
 
 
   ngOnInit(): void {
+    localStorage.removeItem("email");
   }
 
   onForgetPassword(form: NgForm)

@@ -17,7 +17,7 @@ import { AfterAuthGuard } from './auth/afterauth.guard';
 
 
 const appRoutes: Routes = [
-   { path: '', redirectTo: '/home', pathMatch: 'full' },
+   { path: '', redirectTo: '/login', pathMatch: 'full' },
    { path: 'home', component: HomeComponent,canActivate: [AuthGuard] },
    { path: 'project', component: ProjectComponent,canActivate: [AuthGuard] },
    { path: 'Users/:id', component: UsersComponent,canActivate: [AuthGuard] },

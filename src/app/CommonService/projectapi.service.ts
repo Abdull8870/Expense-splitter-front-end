@@ -24,7 +24,7 @@ export class ProjectService {
 
 
     /**
-     * @description Requests server to get the single project from the database based on the given projectID
+     * @description Requests server to get the single project(group) from the database based on the given projectID
      * @author Abdul Rahuman
      * @returns {Object} { message: string; project: Project[]}
      */
@@ -33,6 +33,7 @@ export class ProjectService {
     this.http.get<{ message: string; project: Project[]}>(BACKEND_URL + id).
     subscribe(result=>{
       this.currentProject=result.project[0];
+
       this.currentProjectObs.next({project:this.currentProject})
     },error=>{
       this.toastr.error(`${error.error.message}`, 'AN ERROR OCCURED', {
@@ -41,19 +42,22 @@ export class ProjectService {
       this.router.navigate(["/home"]);
     });
   }
+
+
   getUpdatedCurrentProject(){
     return this.currentProjectObs.asObservable();
   }
+
+
   getUpdatedProject(){
     return this.projectUpdated.asObservable();
   }
 
   /**
-   * @description Requests server to get the add project to the database
+   * @description Requests server to save project(group) to the database
    * @author Abdul Rahuman
    * @returns {Object} { message: string; post: Project }
    */
-
 
   addProject(name: string, createdBy: string, users:string[],history:any) {
     const project={
@@ -75,20 +79,18 @@ export class ProjectService {
       });
   }
 
-
   /**
-   * @description Requests server to delete the project in the database
+   * @description Requests server to delete the project(group) in the database
    * @author Abdul Rahuman
    * @returns {Object} {message:string}
    */
 
-
-  deleteProject(projectId: string,users:string[],dP:string) {
+  deleteProject(postId: string,users:string[],dP:string) {
      const queryParams = `?users=${users}&dp=${dP}`;
-     this.http.delete<{message:string}>(BACKEND_URL + projectId + queryParams).subscribe(result=>{
+     this.http.delete<{message:string}>(BACKEND_URL + postId + queryParams).subscribe(result=>{
       if(result.message==="DELETION SUCCESSFULL!")
       {
-        this.historyService.deleteHistory(projectId).subscribe(result=>{
+        this.historyService.deleteHistory(postId).subscribe(result=>{
          this.toastr.info('This might take few seconds')
           this.getProjectEmail();
         },error=>{
@@ -107,12 +109,12 @@ export class ProjectService {
     });
   }
 
-
   /**
-   * @description Requests server to get the project in the database in which user been part of
-   * @author Abdul Rahuman
-   * @returns {Object} { message: string; project: Project[] }
-   */
+  * @description Requests server to get the project in the database in which user been part of
+  * @author Abdul Rahuman
+  * @returns {Object} { message: string; project: Project[] }
+  */
+
 
   getProjectEmail() {
 
@@ -137,14 +139,12 @@ export class ProjectService {
       return this.project;
     }
 
-
     /**
-     * @description Websocket listening to the creation of live projects
+     * @description Websocket listening to the creation of live projects(Groups)
      note: Listening function is written in the websocketsService file in ../websockets.service
      and this function is being subscribed to the Observable.
      * @author Abdul Rahuman
      */
-
 
     getLiveProjects(email:string){
       this.websocketsService.listenLiveProjects().
@@ -165,13 +165,11 @@ export class ProjectService {
     }
 
     /**
-     * @description Websocket listening to the deletion of live projects
-     note: Listening function is written in the websocketsService file in ../websockets.service
-     and this function is being subscribed to the Observable.
-     * @author Abdul Rahuman
-     */
-
-
+   * @description Websocket listening to the deletion of live projects(Groups)
+   note: Listening function is written in the websocketsService file in ../websockets.service
+   and this function is being subscribed to the Observable.
+   * @author Abdul Rahuman
+   */
 
     getLiveDeleteProject(email:string){
       this.websocketsService.listenLiveDeleteProject().
@@ -181,6 +179,7 @@ export class ProjectService {
         by:string})=>{
 
         if(data.email.includes(email)){
+
         this.getProjectEmail();
         this.toastr.info( `BY ${data.by}`,`THE PROJECT ${data.name} HAS BEEN DELETED`);
 
@@ -191,6 +190,7 @@ export class ProjectService {
         });
       });
     }
+
 
 
 }

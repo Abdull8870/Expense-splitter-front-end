@@ -20,6 +20,7 @@ import { PageEvent } from "@angular/material";
   providers:[BillDetails,ExpenseService]
 })
 export class UsersComponent implements OnInit {
+  submit:boolean;
   totalPosts = 0;
   postsPerPage = 3;
   pageSizeOptions = [3];
@@ -48,10 +49,9 @@ export class UsersComponent implements OnInit {
 
 
     /**
-       * @description This method is for pagination of the project page the user can view only 3
-       bills in a single page.
-       * @author Abdul Rahuman
-       */
+     * @description function which takes care of pagination
+      * @author Abdul Rahuman
+    */
 
     onChangedPage(pageData: PageEvent){
       this.isLoading=true;
@@ -62,11 +62,12 @@ export class UsersComponent implements OnInit {
        this.isLoading=false;
     }
 
+
     /**
-       * @description Once the user clicks on the edit button this function will called
-       and a dialog popup with current bill to be edited will popup
-       * @author Abdul Rahuman
-       */
+      * @description When user wants to edit a bill this function will
+      make the form with predifined values of the selected bill
+      * @author Abdul Rahuman
+    */
 
 
     onEdit(id:number){
@@ -81,17 +82,29 @@ export class UsersComponent implements OnInit {
        let dialogReff = this.dialog.open(this.callAPIDialog);
       }
 
+
       /**
-         * @description Once the user clicks on submit button in
-         the edit bill dialog box this function will be called
-         * @author Abdul Rahuman
-         */
+        * @description When user submits the edited bill the function will
+        save the changed values in the UI and update in the database
+        * @author Abdul Rahuman
+      */
 
 
       onEditSubmit(){
+        this.submit=false;
         const billName=this.editForm.value.BillName;
         const payer=this.editForm.value.Payer;
         const amount=this.editForm.value.Amount;
+        if( amount<=0 || isNaN(amount)){
+          this.router.navigate(["/Users",this.id]);
+          this.toastr.error(`THE AMOUNT ENTERED IS NOT A VALID ONE`, 'TRY AGAIN', {
+          timeOut: 3000,
+          });
+          this.submit=false;
+          this.isLoading=false;
+          this.editReciverArray=[];
+          return;
+        }
         const recivers:any[]=this.editReciverArray;
         const billform={
         _id:this.editId.id,
@@ -109,9 +122,10 @@ export class UsersComponent implements OnInit {
 
 
       /**
-         * @description Update the bill if been edited
-         * @author Abdul Rahuman
-         */
+        * @description function called from inside the onEditSubmit function to take care of the
+        saving the history details
+        * @author Abdul Rahuman
+      */
 
       updateBill(billform){
         let removedUsers:string[]=[];
@@ -158,14 +172,8 @@ export class UsersComponent implements OnInit {
 
       }
 
-      /**
-         * @description OnInit the params will be listened and getCurrentProject function will be
-         called with the project id
-         * @author Abdul Rahuman
-         */
-
-
   ngOnInit() {
+    this.submit=false;
     this.userEmail=localStorage.getItem('email').toLowerCase();
     this.newBill=false;
     this.isLoading=true;
@@ -177,26 +185,50 @@ export class UsersComponent implements OnInit {
           this.projectService.getCurrentProject(this.id);
         }
       );
-       this.getCurrentProject();
+      this.curProSub = this.projectService.getUpdatedCurrentProject().
+      subscribe((result:{project:Project})=>{
+       this.isLoading=true;
+       this.currentProject=result.project;
+       this.bill=this.currentProject.bills;
+       let cloneBill=this.bill.slice();
+       this.totalPosts=this.bill.length;
+       this.pageNationBill=cloneBill.splice(0,3);
+       this.isLoading=false;
+       if(this.bill.length < 1){
+          this.newBill=true;
+       }
+       else if(this.bill.length > 0){
+         this.newBill=false;
+       }
+     });
+
+
+
          }
 
+
          /**
-            * @description On Submit Bill
-            * @author Abdul Rahuman
-            */
+           * @description function called when user submits a new bill and store the added bill in the
+           datebase
+           * @author Abdul Rahuman
+         */
 
        onSubmit(){
+       this.submit=false;
        let date=new Date();
        this.newBill=false;
        this.isLoading=true;
          const billName=this.payerForm.value.billname;
          const payer=this.payerForm.value.payer;
          const amount=this.payerForm.value.amount;
-         if( amount<0 || isNaN(amount)){
+         if( amount<=0 || isNaN(amount)){
            this.router.navigate(["/Users",this.id]);
            this.toastr.error(`THE AMOUNT ENTERED IS NOT A VALID ONE`, 'TRY AGAIN', {
            timeOut: 3000,
            });
+           this.submit=false;
+           this.isLoading=false;
+           this.reciverArray=[];
            return;
          }
          let recivers:any[]=this.reciverArray;
@@ -220,9 +252,10 @@ export class UsersComponent implements OnInit {
     }
 
     /**
-       * @description called whenever the TO  checkbox is been checked and unchecked in the bill form
-       * @author Abdul Rahuman
-       */
+      * @description function used to monitor the change events of checkbox in the
+      form
+      * @author Abdul Rahuman
+    */
 
      onChange(event){
       const index=this.reciverArray.indexOf(event.target.value);
@@ -233,12 +266,20 @@ export class UsersComponent implements OnInit {
        this.reciverArray.splice(index,1);
        }
 
+      if(this.reciverArray.length>0){
+         this.submit=true;
+      }else if(this.reciverArray.length<1){
+          this.submit=false;
+      }
+
+
       }
 
       /**
-         * @description called whenever the TO  checkbox is been checked and unchecked in the Edit bill form
-         * @author Abdul Rahuman
-         */
+        * @description function used to monitor the change events of checkbox in the
+        edit form
+        * @author Abdul Rahuman
+      */
 
      onEditChange(event){
      const index=this.editReciverArray.indexOf(event.target.value);
@@ -249,14 +290,27 @@ export class UsersComponent implements OnInit {
       this.editReciverArray.splice(index,1);
        }
 
+       if(this.editReciverArray.length>0){
+         this.submit=true;
+       }else if(this.editReciverArray.length<1){
+           this.submit=false;
+       }
+
       }
 
-      /**
-         * @description called when DeletButton is pressed
-         * @author Abdul Rahuman
-         */
+      onEditCancel(){
+        this.editReciverArray=[];
+        this.submit=false;
+      }
 
-   onDeleteBill(billId:string){
+
+      /**
+        * @description function called when user deletes this function newBill
+        delete the bill in the database and updates the UI
+        * @author Abdul Rahuman
+      */
+
+    onDeleteBill(billId:string){
        this.isLoading=true;
        let billArray=this.currentProject.bills;
        let bill=billArray.filter(p=>{
@@ -276,14 +330,15 @@ export class UsersComponent implements OnInit {
    }
 
    /**
-      * @description Will get Called from ngOnInit component to listen to the
-      currentProject and update the page accodringly
-      * @author Abdul Rahuman
-      */
+     * @description when user navigates to the page this function will given
+     details of selected Project (group)
+     * @author Abdul Rahuman
+   */
 
    getCurrentProject(){
      this.curProSub = this.projectService.getUpdatedCurrentProject().
      subscribe((result:{project:Project})=>{
+       this.isLoading=true;
       this.currentProject=result.project;
       this.bill=this.currentProject.bills;
       let cloneBill=this.bill.slice();
@@ -296,34 +351,24 @@ export class UsersComponent implements OnInit {
     });
    }
 
-   /**
-      * @description On clicking newbill button this funtion will be called
-      and new billform will be rendered
-      * @author Abdul Rahuman
-      */
-
-
    onAddNewBill(){
      this.cancel=true;
      this.newBill=true;
    }
-
-   /**
-      * @description On cancel create bill this function will be called and
-      the page will be changed accodringly
-      * @author Abdul Rahuman
-      */
-
    onCancel(){
      this.newBill=false;
      this.cancel=false;
+     this.submit=false;
+     this.reciverArray=[];
    }
 
+
    /**
-      * @description Main part of the application when user clicks on generate expense button this function
-      will calculate the expense report
-      * @author Abdul Rahuman
-      */
+     * @description finally when user clicks on generateExpense button this function will
+     calculate the initial expense and will navigate to the expense page where final expense
+     will be calculated
+     * @author Abdul Rahuman
+   */
 
 
    onGenerateBill(){
@@ -367,13 +412,6 @@ export class UsersComponent implements OnInit {
 
           this.generateExpense();
    }
-
-   /**
-      * @description Gets called from onGenerateBill function to post the
-      expense in the database
-      * @author Abdul Rahuman
-      */
-
 
    generateExpense(){
 

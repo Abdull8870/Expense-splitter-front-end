@@ -2,7 +2,7 @@ import { Component, OnInit,ViewChild,TemplateRef } from '@angular/core';
 import { Subscription } from "rxjs";
 import { AuthService } from '../auth/auth.service';
 import { ReactiveFormsModule,FormArray, FormControl, FormGroup, Validators ,FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatDialogConfig } from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,MatDialogConfig} from '@angular/material/dialog';
 import { ProjectService } from '../CommonService/projectapi.service';
 import { Project } from '../models/project.model';
 import { Router } from "@angular/router";
@@ -26,11 +26,6 @@ export class HeadersComponent implements OnInit {
   constructor(private authService:AuthService,private fb:FormBuilder,
   public dialog:MatDialog,private projectServiceapi:ProjectService,private router: Router) { }
 
-  /**
-     * @description OnInit the authListenerSubs will subscribe to the auth status of the user like
-     * @author Abdul Rahuman
-     */
-
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth();
     this.authListenerSubs = this.authService
@@ -45,13 +40,11 @@ export class HeadersComponent implements OnInit {
     this.authService.logout();
     }
 
-
     /**
-       * @description When user clicks the bill tab this function runs and gives the no of project available
-       for the user
-       * @author Abdul Rahuman
-       */
-
+   * @description Function used when user clicks on the bills tab and a pop will be shown
+   asking for the input from the user.
+   * @author Abdul Rahuman
+   */
 
     onUserClick(){
      this.activeProject=this.projectServiceapi.getProjectId();
@@ -79,13 +72,11 @@ export class HeadersComponent implements OnInit {
          this.activeProject=undefined;
       }
 
-
       /**
-         * @description When user selects the project he wanted to see the bill the router will navigate to
-           to /Users/:id with id of selected project ID
-         * @author Abdul Rahuman
-         */
-
+     * @description when user selects an option in the pop the function will get the projectID
+     and will navigate to the bills tab
+     * @author Abdul Rahuman
+     */
 
     onSubmit(){
      const index=this.selectProjectForm.value.projectName;
@@ -94,13 +85,6 @@ export class HeadersComponent implements OnInit {
      this.activeProject=undefined;
      this.router.navigate(["/Users",project._id]);
      }
-
-
-     /**
-        * @description When there is no project available for the user the user will be prompted with
-        dialog box to navigate to the project component to create a project
-        * @author Abdul Rahuman
-        */
 
      onCreateProject(){
        this.router.navigate(["/project"]);

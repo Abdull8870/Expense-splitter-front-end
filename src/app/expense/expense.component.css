@@ -1,7 +1,54 @@
-table {
-  width: 100%;
-}
 
 mat-spinner {
   margin: auto;
 }
+
+mat-card {
+  width: 100%;
+}
+
+table {
+  width: 95%;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  }
+
+mat-card-subtitle {
+  margin-bottom: auto;
+}
+
+/* table {
+    table-layout:fixed;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+} */
+
+@media screen and (max-width: 600px) {
+
+  mat-spinner {
+    margin: auto;
+  }
+
+  mat-card
+  {
+    width: 100%;
+    margin :auto;
+  }
+
+  /* .table {
+         overflow-x: auto;
+         display: block;
+     } */
+
+    .table {
+       width: 100vw;
+       height: auto;
+       margin-top: 1rem;
+     }
+
+ }

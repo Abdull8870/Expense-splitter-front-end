@@ -23,12 +23,25 @@ export class AuthService {
   private countries:string[]=[];
   private phoneCode:{code:string,num:string}[]=[];
   private phoneCodeListner = new Subject<{countries:string[],phoneCode:{code:string,num:string}[]}>();
+  private useremail=new Subject<{useremail:string}>();
 
   constructor(private http: HttpClient, private router: Router,private projectService:ProjectService,
   private toastr: ToastrService,private websocketsService:WebsocketsService) {}
 
   getToken() {
     return this.token;
+  }
+
+  getCurrentUserEmail(){
+    return this.useremail.asObservable();
+  }
+
+  getEmail(){
+    const email=localStorage.getItem("email");
+    if(!email){
+      return
+    }
+    this.useremail.next({useremail:email.toLowerCase()});
   }
 
   getIsAuth() {
@@ -86,16 +99,16 @@ export class AuthService {
 
   createUser(data:User) {
     const authData: User = data;
-    this.http.post(BACKEND_URL + "/signup", authData).subscribe(
+    this.http.post(BACKEND_URL + "signup", authData).subscribe(
       () => {
         this.router.navigate(["/login"]);
       },
       error => {
         this.authStatusListener.next(false);
-        this.toastr.warning(`${error.error.message}`, 'AN ERROR OCCURED', {
+        this.toastr.error(`${error.error.message}`, 'AN ERROR OCCURED', {
         timeOut: 3000,
         });
-        this.router.navigate(["/login"]);
+        this.router.navigate(["/signup"]);
       }
     );
   }
@@ -105,7 +118,7 @@ export class AuthService {
     const authData: AuthData = { email: email, password: password };
     this.http
       .post<{ token: string; expiresIn: number; userId: string }>(
-        BACKEND_URL + "/login",
+        BACKEND_URL + "login",
         authData
       )
       .subscribe(
@@ -124,8 +137,8 @@ export class AuthService {
               now.getTime() + expiresInDuration * 1000
             );
             this.saveAuthData(token, expirationDate, this.userId);
-            this.websocketsService.verifyUser('set-user',token);
             localStorage.setItem("email", email);
+            this.useremail.next({useremail:email.toLowerCase()});
             this.router.navigate(["/home"]);
             this.toastr.success('You have logged in successfully','Success', {
             timeOut: 3000,
@@ -164,8 +177,12 @@ export class AuthService {
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.router.navigate(["/"]);
-  }
+    this.router.navigate(["/login"]);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+
+    }
 
   private setAuthTimer(duration: number) {
     this.tokenTimer = setTimeout(() => {
@@ -183,6 +200,7 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("expiration");
     localStorage.removeItem("userId");
+    localStorage.removeItem("email");
   }
 
   private getAuthData() {
@@ -200,12 +218,15 @@ export class AuthService {
   }
 
    getCountryCodes(){
+
      this.http.get<{message:string,countries:string[],phoneCode:{code:string,num:string}[]}>(BACKEND_URL+'countrycodes').
      subscribe(data=>{
+
        this.countries=data.countries;
        this.phoneCode=data.phoneCode;
        this.phoneCodeListner.next({countries:this.countries,phoneCode:this.phoneCode});
      },err=>{
+       console.log("error");
        console.log(err);
 
      });

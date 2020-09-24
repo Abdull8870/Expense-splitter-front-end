@@ -23,6 +23,7 @@ export class SignupComponent implements OnInit {
   constructor(private authService:AuthService,private http: HttpClient) { }
 
   onSignup(form: NgForm) {
+    this.isLoading=true;
     let phoneNum=form.value.phoneCode+''+form.value.phoneNumber;
         let data:User={
       email:form.value.email,
@@ -38,6 +39,7 @@ export class SignupComponent implements OnInit {
 
 
   ngOnInit(): void {
+    localStorage.removeItem("email");
     this.isLoading=true;
     this.authService.getCountryCodes();
     this.phoneSub=this.authService.getPhoneAsObservable().subscribe(result=>{

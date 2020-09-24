@@ -1,16 +1,16 @@
     <mat-card class="welcome-card">
       <mat-card-header>
-        <mat-card-title><strong>Welcome to Expense Splitter</strong></mat-card-title>
+        <mat-card-title><h3><strong style="color:#3377ff;">Welcome to Expense Splitter</strong></h3></mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p><em>
-         ADD YOUR FRIENDS EMAIL ID AND PULL THEM INTO A PROJECT
+        <p><strong>
+         ADD YOUR FRIENDS EMAIL ID AND PULL THEM INTO A GROUP
          THEY WILL BE NOTIFIED BY EMAIL AS WELL AS A NOTIFICATION IF
-         THEY WERE ONLINE</em>
+         THEY WERE ONLINE</strong>
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button mat-button color="accent"  routerLink="/project">YOUR PROJECTS</button>
+        <button class="btn btn-success"  routerLink="/project">YOUR GROUPS</button>
       </mat-card-actions>
     </mat-card>
 
@@ -19,13 +19,13 @@
       <mat-card-title style="color:#e60000;"><strong>GUIDE</strong></mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <p>
-        <li>CLick on <b>PROJECT</b> tab or <b>YOUR PROJECTS</b> button to see the projects you were part of
-        and you can create your own project</li>
-        <li>If Project were available click on <b>ADD NEW BILL</b> button to add the bills you have paid
-        </li>
-        <li>Click on <b>GENERATE EXPENSE</b> button to generate the expense</li>
-        <li>Click on <b>HISTORY</b> button to view the History</li>
-    </p>
+        <ol class="list-group">
+          <li class="list-group-item">Click on <b>GROUPS</b> tab or <b>YOUR GROUPS</b> button to see the groups you were part of
+          and you can create your own group</li>
+          <li class="list-group-item">If GROUPS were available click on <b>ADD BILL DETAILS</b> button to add the bills you have paid
+          </li>
+          <li class="list-group-item">Click on <b>GENERATE EXPENSE</b> button to generate the expense</li>
+          <li class="list-group-item">Click on <b>HISTORY</b> button to view the History</li>
+      </ol>
       </mat-card-content>
   </mat-card>

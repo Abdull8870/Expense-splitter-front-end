@@ -11,6 +11,7 @@ ul.timeline > li:before {
     z-index: 400;
 }
 
+
 mat-spinner {
   margin: auto;
 }
@@ -19,17 +20,20 @@ ul.timeline {
     list-style-type: none;
     position: relative;
 }
+
 ul.timeline:before {
     content: ' ';
     background: #d4d9df;
     display: inline-block;
     position: absolute;
-    left: 29px;
-    width: 2px;
-    height: 100%;
+    left: 30px;
+    width: 1px;
+    height: 80%;
     z-index: 400;
 }
+
+
 ul.timeline > li {
-    margin: 20px 0;
-    padding-left: 20px;
+    margin: 15px 0;
+    padding-left: 10px;
 }
